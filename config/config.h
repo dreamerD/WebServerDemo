@@ -1,13 +1,28 @@
 #ifndef CONFIG_H
 #define CONFIG_H
+#include <unistd.h>
 #include <string>
 using std::string;
 class Config {
    public:
-    Config(const char* argv[]);
-    ~Config();
+    Config();
+    void parse_arg(int argc, char* const* argv);
+
+    ~Config(){};
 
    public:
+    /*一些常量*/
+    static constexpr int iLTLT = 0;
+    static constexpr int iLTET = 1;
+    static constexpr int iETLT = 2;
+    static constexpr int iETET = 3;
+
+    static constexpr int iNOTLINGER = 0;
+    static constexpr int iLINGER = 1;
+
+    static constexpr int iProactor = 0;
+    static constexpr int iReactor = 1;
+
     /*数据库相关参数*/
     string sdatabase_user;
     string sdatabase_password;
