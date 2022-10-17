@@ -5,7 +5,7 @@ ThreadPool<T>::ThreadPool(int thread_number, int max_requests_number) {
     assert(thead_number > 0 && max_requests_number > 0);
     this->thread_number_ = thread_number;
     this->max_requests_number_ = max_requests_number;
-    this->threads_ = std::make_unique<pthread_t>(thread_number);
+    this->threads_ = new pthread_t[thread_number];
 
     for (int i = 0; i < thread_number_; i++) {
         pthread_t cur_pthread;
@@ -16,7 +16,7 @@ ThreadPool<T>::ThreadPool(int thread_number, int max_requests_number) {
 }
 
 template <typename T>
-bool ThreadPool<T>::AppendTask(std::shared_ptr<T>& request) {
+bool ThreadPool<T>::AppendTask(T* request) {
     mymutex_.Lock();
     if (work_queue.size() >= max_requests_number_) {
         mymutex_.Unlock();
@@ -39,7 +39,7 @@ void* ThreadPool<T>::worker(void* arg) {
         if (pool->work_queue.empty()) {
             continue;
         }
-        std::shared_ptr<T> request = pool->work_queue.front();
+        T* request = pool->work_queue.front();
         pool->work_queue.pop_front();
         pool->mymutex_.Unlock();
         if (request == nullptr) {
