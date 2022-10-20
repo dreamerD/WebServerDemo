@@ -1,7 +1,6 @@
 #include "threadpool.h"
-
 template <typename T>
-ThreadPool<T>::ThreadPool(int thread_number, int max_requests_number) {
+MyThreadPool<T>::MyThreadPool(int thread_number, int max_requests_number) {
     assert(thead_number > 0 && max_requests_number > 0);
     this->thread_number_ = thread_number;
     this->max_requests_number_ = max_requests_number;
@@ -16,7 +15,7 @@ ThreadPool<T>::ThreadPool(int thread_number, int max_requests_number) {
 }
 
 template <typename T>
-bool ThreadPool<T>::AppendTask(T* request) {
+bool MyThreadPool<T>::AppendTask(T* request) {
     mymutex_.Lock();
     if (work_queue.size() >= max_requests_number_) {
         mymutex_.Unlock();
@@ -29,8 +28,8 @@ bool ThreadPool<T>::AppendTask(T* request) {
 }
 
 template <typename T>
-void* ThreadPool<T>::worker(void* arg) {
-    ThreadPool<T>* pool = (ThreadPool<T>*)arg;
+void* MyThreadPool<T>::worker(void* arg) {
+    MyThreadPool<T>* pool = (MyThreadPool<T>*)arg;
 
     while (true) {
         pool->mysem_.Wait();

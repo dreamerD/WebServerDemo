@@ -7,8 +7,8 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-#include "lock/locker.h"
-#include "log_queue/log_queue.h"
+#include "../lock/locker.h"
+#include "../log_queue/log_queue.h"
 using std::string;
 class Log {
    public:
@@ -37,19 +37,19 @@ class Log {
     bool is_closed_;           // 关闭
 };
 #define LOG_DEBUG(format, ...)                                  \
-    if (0 == is_closed_) {                                      \
+    if (0 == is_closed_log_) {                                  \
         Log::GetInstance()->WriteLog(0, format, ##__VA_ARGS__); \
     }
-#define LOG_DEBUG(format, ...)                                  \
-    if (0 == is_closed_) {                                      \
+#define LOG_INFO(format, ...)                                   \
+    if (0 == is_closed_log_) {                                  \
         Log::GetInstance()->WriteLog(1, format, ##__VA_ARGS__); \
     }
-#define LOG_DEBUG(format, ...)                                  \
-    if (0 == is_closed_) {                                      \
+#define LOG_WARN(format, ...)                                   \
+    if (0 == is_closed_log_) {                                  \
         Log::GetInstance()->WriteLog(2, format, ##__VA_ARGS__); \
     }
-#define LOG_DEBUG(format, ...)                                  \
-    if (0 == is_closed_) {                                      \
+#define LOG_ERROR(format, ...)                                  \
+    if (0 == is_closed_log_) {                                  \
         Log::GetInstance()->WriteLog(3, format, ##__VA_ARGS__); \
     }
 #endif

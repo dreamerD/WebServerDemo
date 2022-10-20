@@ -5,12 +5,12 @@
 #include <list>
 #include <memory>
 
-#include "lock/locker.h"
-template <typename T>
-class ThreadPool {
+#include "../lock/locker.h"
+template <class T>
+class MyThreadPool {
    public:
-    ThreadPool(int thread_number = 8, int max_requests_number = 10000);
-    ~ThreadPool() = default;
+    MyThreadPool(int thread_number = 8, int max_requests_number = 10000);
+    ~MyThreadPool() { delete[] threads_; };
     bool AppendTask(T* request);
 
    private:

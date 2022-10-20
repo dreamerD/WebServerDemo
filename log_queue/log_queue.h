@@ -1,6 +1,6 @@
 #ifndef LOG_QUEUE_H
 #define LOG_QUEUE_H
-#include "lock/locker.h"
+#include "../lock/locker.h"
 template <typename T>
 class LogQueue {
    public:
