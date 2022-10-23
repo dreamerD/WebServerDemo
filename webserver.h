@@ -2,6 +2,7 @@
 #define WEBSERVER_H
 #include <sys/epoll.h>
 #include <sys/socket.h>
+#include <unistd.h>
 #include <string>
 #include "http/http_conn.h"
 #include "sqlpool/sql_conn_pool.h"
@@ -17,20 +18,20 @@ class WebServer {
    public:
     WebServer();
     ~WebServer();
-    void init();
+    void Init(int port, string user, string passWord, string databaseName, int log_write, int opt_linger, int trigmode, int sql_num, int thread_num, int close_log, int actor_model);
     void ThreadPool();
     void SqlPool();
     void LogWrite();
-    void trigMode();
+    void TrigMode();
     void EventListen();
     void EventLoop();
-    void Timer();
-    void AdjustTimer();
-    void DelTimer();
+    void Timer(int connfd, struct sockaddr_in client_address);
+    void AdjustTimer(MyTimer* timer);
+    void DealTimer(MyTimer* timer, int sockfd);
     void DealClientData();
-    void DealSignal();
-    void DealRead();
-    void DealWrite();
+    void DealSignal(bool& timeout, bool& stop);
+    void DealRead(int sockfd);
+    void DealWrite(int sockfd);
 
    public:
     int port_;            //端口
@@ -39,7 +40,7 @@ class WebServer {
     int actormodel_;      // Reactor or Proactor
 
     // 网络
-    int pipe_fd_[2];   // 相互连接的套接字
+    int pipefd_[2];    // 相互连接的套接字
     int epollfd_;      // epoll
     HttpConn* users_;  // http连接
 
@@ -55,9 +56,9 @@ class WebServer {
     int thread_num_;
 
     // epoll_event
-    epoll_event events[MAX_EVENT_NUMBER];
+    epoll_event events_[MAX_EVENT_NUMBER];
 
-    int listnfd_;         //监听套接字
+    int listenfd_;        //监听套接字
     int OPT_LINGER_;      //是否优雅下线
     int TRIGMode_;        // ET/LT
     int LISTENTrigmode_;  // ET/LT

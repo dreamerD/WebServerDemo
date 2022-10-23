@@ -14,9 +14,8 @@ void MyTimerList::AddTimer(MyTimer* timer) {
     queue_.push(timer);
 }
 
-// void MyTimerList::AdjustTimer(MyTimer* timer){
-
-// }
+void MyTimerList::AdjustTimer(MyTimer* timer) {
+}
 
 void MyTimerList::DelTimer(MyTimer* timer) {
     if (timer == nullptr) {

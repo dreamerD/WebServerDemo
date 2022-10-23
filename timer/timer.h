@@ -10,8 +10,8 @@
 class MyTimer;
 // 连接信息
 struct ClientData {
-    sockaddr_in address;
-    int sockfd;
+    sockaddr_in address_;
+    int sockfd_;
     MyTimer* mytimer_;
 };
 
@@ -40,7 +40,7 @@ class MyTimerList {
     // 添加
     void AddTimer(MyTimer* timer);
     // 调整
-    // void AdjustTimer(MyTimer* timer);
+    void AdjustTimer(MyTimer* timer);
     // 删除
     void DelTimer(MyTimer* timer);
     // 定时任务

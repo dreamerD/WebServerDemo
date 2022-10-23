@@ -44,7 +44,18 @@ void* MyThreadPool<T>::worker(void* arg) {
         if (request == nullptr) {
             continue;
         }
-        request->run();
+        // Reactor
+        // 0 是 读事件
+        if (0 == request->state_) {
+            if (request->read_once()) {
+                request->improv_ = 1;
+                // connectionRAII mysqlcon(&request->mysql, m_connPool);
+                request->process();
+            } else {
+                request->improv_ = 1;
+                request->timer_flag = 1;
+            }
+        }
     }
     return pool;
 }
