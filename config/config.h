@@ -1,44 +1,46 @@
 #ifndef CONFIG_H
 #define CONFIG_H
-#include <unistd.h>
-#include <string>
-using std::string;
+
+#include "webserver.h"
+
+using namespace std;
+
 class Config {
    public:
     Config();
-    void parse_arg(int argc, char* const* argv);
-
     ~Config(){};
 
-   public:
-    /*一些常量*/
-    static constexpr int iLTLT = 0;
-    static constexpr int iLTET = 1;
-    static constexpr int iETLT = 2;
-    static constexpr int iETET = 3;
+    void parse_arg(int argc, char* argv[]);
 
-    static constexpr int iNOTLINGER = 0;
-    static constexpr int iLINGER = 1;
+    // 端口号
+    int PORT;
 
-    static constexpr int iProactor = 0;
-    static constexpr int iReactor = 1;
+    // 日志写入方式
+    int LOGWrite;
 
-    /*数据库相关参数*/
-    string sdatabase_user;
-    string sdatabase_password;
-    int idatabase_port;
-    int idatabase_conn_thread_num;
+    // 触发组合模式
+    int TRIGMode;
 
-    /*网络连接相关参数*/
-    int inet_listen_port;
-    int inet_triger_mode;
-    int inet_actor_mode;
-    int inet_opt_linger;
+    // listenfd触发模式
+    int LISTENTrigmode;
 
-    /*日志相关参数*/
-    int ilog_mode;
+    // connfd触发模式
+    int CONNTrigmode;
 
-    /*线程池相关参数*/
-    int ithread_num;
+    // 优雅关闭链接
+    int OPT_LINGER;
+
+    // 数据库连接池数量
+    int sql_num;
+
+    // 线程池内的线程数量
+    int thread_num;
+
+    // 是否关闭日志
+    int close_log;
+
+    // 并发模型选择
+    int actor_model;
 };
+
 #endif

@@ -47,6 +47,9 @@ class MyTimerList {
     void Tick();
 
    private:
-    std::priority_queue<MyTimer*, std::vector<MyTimer*>, myGreater> queue_;
+    void addTimer(MyTimer* timer, MyTimer* lst_head);
+    // 头尾结点
+    MyTimer* head_;
+    MyTimer* tail_;
 };
 #endif
