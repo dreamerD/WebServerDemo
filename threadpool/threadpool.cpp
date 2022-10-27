@@ -48,13 +48,16 @@ void* MyThreadPool<T>::worker(void* arg) {
         // 0 是 读事件
         if (0 == request->state_) {
             if (request->read_once()) {
-                request->improv_ = 1;
+                // request->improv_ = 1;
                 // connectionRAII mysqlcon(&request->mysql, m_connPool);
                 request->process();
-            } else {
-                request->improv_ = 1;
-                request->timer_flag = 1;
             }
+            // else {
+            //     request->improv_ = 1;
+            //     request->timer_flag = 1;
+            // }
+        } else {
+            request->write();
         }
     }
     return pool;

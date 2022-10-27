@@ -47,8 +47,9 @@ void Utils::Addsig(int sig, void(handler)(int), bool restart) {
     struct sigaction sa;
     memset(&sa, '\0', sizeof(sa));
     sa.sa_handler = handler;
-    if (restart)
+    if (restart) {
         sa.sa_flags |= SA_RESTART;
+    }
     sigfillset(&sa.sa_mask);
     assert(sigaction(sig, &sa, NULL) != -1);
 }
@@ -64,8 +65,18 @@ void Utils::ShowError(int connfd, const char* info) {
     send(connfd, info, strlen(info), 0);
     close(connfd);
 }
+//将事件重置为EPOLLONESHOT
+void Utils::Modfd(int epollfd, int fd, int ev, int TRIGMode) {
+    epoll_event event;
+    event.data.fd = fd;
 
-int* Utils::pipefd_ = 0;
+    if (1 == TRIGMode)
+        event.events = ev | EPOLLET | EPOLLONESHOT | EPOLLRDHUP;
+    else
+        event.events = ev | EPOLLONESHOT | EPOLLRDHUP;
+
+    epoll_ctl(epollfd, EPOLL_CTL_MOD, fd, &event);
+}
 int Utils::epollfd_ = 0;
 
 class Utils;

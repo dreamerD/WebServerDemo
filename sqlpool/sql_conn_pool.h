@@ -40,6 +40,7 @@ class ConnectionRAII {
    public:
     ConnectionRAII(MySQLConnPool* connpool);
     ~ConnectionRAII();
+    MYSQL* GetConnection() { return connRAII_; }
 
    private:
     MYSQL* connRAII_;

@@ -23,7 +23,7 @@ class Utils {
 
     //将内核事件表注册读事件，ET模式，选择开启EPOLLONESHOT
     static void Addfd(int epollfd, int fd, bool one_shot, int TRIGMode);
-
+    static void Modfd(int epollfd, int fd, int ev, int TRIGMode);
     //信号处理函数
     static void SigHandler(int sig);
 

@@ -129,7 +129,8 @@ void WebServer::LogWrite() {
 void WebServer::SqlPool() {
     mysql_conn_pool_ = MySQLConnPool::GetInstance();
     mysql_conn_pool_->init("localhost", conn_user_, conn_password_, database_name_, 3306, sqL_conn_number_, is_closed_log_);
-    // users->initMySql_result(mysql_conn_pool_);
+    // 初始化数据库读取表
+    users_->Initmysql();
 }
 
 void WebServer::ThreadPool() {
@@ -278,16 +279,16 @@ void WebServer::DealRead(int sockfd) {
         // 还应当增加处理，若是读出错，需要删除定时器
         // 可以再来一套无名套接字
         // 这是参考代码的做法
-        while (true) {
-            if (1 == users_[sockfd].improv_) {
-                if (1 == users_[sockfd].timer_flag_) {
-                    DealTimer(timer, sockfd);
-                    users_[sockfd].timer_flag_ = 0;
-                }
-                users_[sockfd].improv_ = 0;
-                break;
-            }
-        }
+        // while (true) {
+        //     if (1 == users_[sockfd].improv_) {
+        //         if (1 == users_[sockfd].timer_flag_) {
+        //             DealTimer(timer, sockfd);
+        //             users_[sockfd].timer_flag_ = 0;
+        //         }
+        //         users_[sockfd].improv_ = 0;
+        //         break;
+        //     }
+        // }
     } else {
         ;
     }
